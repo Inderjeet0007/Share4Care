@@ -11,33 +11,13 @@ session_destroy();
 unset($_SESSION['username']);
 header("location: login.php");
 }
-$gender =$_POST['gender'];
-$age=$_POST['age'];
 
 $quantity= $_POST['quantity'];
-
-
-print_r($age);
-$fields = "";
-$values = "";
-
-foreach($age as $a)
-{
-	$fields.=$a.",";
-	$values.="1,";
-}
-$fields = rtrim($fields,",");
-
-$values = rtrim($values,",");
-echo "$fields";
-echo "$values";
-
 if (isset($_SESSION['username']))
 {
 $name=$_SESSION['username'];
 }
-$query = "INSERT INTO clothes (Quantity, Gender, username,".$fields.") VALUES('$quantity', '$gender','$name', ".$values.")";
-echo $query;
+$query = "INSERT INTO toys (username, Quantity) VALUES('$name', '$quantity')";
 
 $result= mysqli_query($db, $query);
 if($result)

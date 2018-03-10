@@ -103,9 +103,9 @@
 				<option value="Both">Both</option>
 			</select><br>
 			<p> Age</p>
-				<input type="checkbox" name="age[]" value="1-5">1-5<br>
-				<input type="checkbox" name="age[]" value="6-10">6-10<br>
-				<input type="checkbox" name="age[]" value="11-18" >11-18<br>
+				<input type="checkbox" name="age[]" value="onetofive">1-5<br>
+				<input type="checkbox" name="age[]" value="sixtoten">6-10<br>
+				<input type="checkbox" name="age[]" value="eleventoeighteen" >11-18<br>
 			<br>
 			
 			<p> Quantity</p>
@@ -146,7 +146,7 @@
           <h4 class="modal-title">Stationary Detail</h4>
         </div>
         <div class="modal-body">
-          <form>
+          <form method="POST" action="books_server.php">
 			
 			<p>Books</p>
 				<input type="checkbox" name="book[]" value="1">Educational<br>
@@ -186,10 +186,10 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Stationary Detail</h4>
+          <h4 class="modal-title">Toys Details</h4>
         </div>
         <div class="modal-body">
-          <form>
+          <form method="POST" action="toys_server.php">
 			
 			<p> Quantity</p>
 			<input type="text" name="quantity" placeholder="Enter quantity">

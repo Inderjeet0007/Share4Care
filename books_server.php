@@ -12,20 +12,13 @@ unset($_SESSION['username']);
 header("location: login.php");
 }
 
-$gender =$_POST['gender'];
-$age= $_POST['age'];
-foreach($age as $age1) {
- $items[] = $age1;
- 
-}
-
-print_r($items[1]);
+$book = $_POST['book'];
 $quantity= $_POST['quantity'];
 if (isset($_SESSION['username']))
 {
 $name=$_SESSION['username'];
 }
-$query = "INSERT INTO clothes (Quantity, Gender, Age_Group, username) VALUES('$quantity', '$gender', '$items', '$name')";
+$query = "INSERT INTO stationary (username, Type, Quantity) VALUES('$name', '$book', '$quantity')";
 
 $result= mysqli_query($db, $query);
 if($result)
