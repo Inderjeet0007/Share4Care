@@ -39,22 +39,20 @@ if(mysqli_connect_errno()){
 }
 
 
-$cloth_count = Select SUM(quantity) FROM clothes;
-$toy_count = Select SUM(quantity) FROM toys;
-$st_count = Select SUM(quantity) FROM stationary;
-
-// updating table
-UPDATE result SET supply=$cloth_count WHERE product='clothes';
-UPDATE result SET supply=$st_count WHERE product='stationary';
-UPDATE result SET supply=$toy_count WHERE product='toys';
-<?php
+$q3 = $db->query('Select SUM(Quantity) FROM clothes');
+print_r($q3);
+$array3 = Array();
+while($result = $q3->fetch_assoc()){
+$array3[] = $result['Quantity'];
+}
+print_r($array3);
 
 //get results from database
 $result = mysqli_query($db,"SELECT * FROM result");
 $all_property = array();  //declare an array for saving property
 
 //showing property
-echo '<table class="data-table" align="center" style="margin-top:20%;">'  //initialize table tag
+echo '<table class="data-table" align="center" style="margin-top:20%;">'; //initialize table tag
 while ($property = mysqli_fetch_field($result)) {
    echo '<td>' . $property->name . '</td>';  //get field name for header
    array_push($all_property, $property->name);  //save those to array

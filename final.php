@@ -1,80 +1,129 @@
-<html>
-<head>
-</head>
-<body>
-    <button type="submit" name="FCFS" onclick="document.location.href= 'admin.php'">Button1</button>
+<?php
+
+    // initializing variables
+    $username = "";
+    $email = "";
+    $errors = array();
+
+    // connect to the database
+
+    $db = mysqli_connect('localhost', 'root', '', 'share4care');
+
+    $query1 = $db->query("SELECT `clothes` FROM `need`;");
+        $array1 = Array();
+        while($result = $query1->fetch_assoc()){
+        $array1[] = $result['clothes'];
+        }
+    $query2 = $db->query("SELECT `toys` FROM `need`;");
+        $array2 = Array();
+        while($result = $query2->fetch_assoc()){
+        $array2[] = $result['toys'];
+        }
+    $query3 = $db->query("SELECT `stationary` FROM `need`;");
+        $array3 = Array();
+        while($result = $query3->fetch_assoc()){
+        $array3[] = $result['stationary'];
+    }
+    #query4 for timestamp
+    $query4 = $db->query("SELECT `Timestamp` FROM `need`;");
+        $array4 = Array();
+        while($result = $query4->fetch_assoc()){
+        $array4[] = $result['Timestamp'];
+    }
     
-    
-    <?php 
-        $username = "";
-        $email = "";
-        $errors = array();
+    print_r($array1);
+    print_r($array2);
+    print_r($array3);
+    print_r($array4);
+    $fields1 = "";
+    $fields2 = "";
+    $fields3 = "";
+    $fields4 = "";
+	
+	
+	
+    foreach($array1 as $a)
+    {
+        $fields1.=$a.",";
+    }
+    $fields1 = rtrim($fields1,",");
 
-        // connect to the database
-        $db = mysqli_connect('localhost', 'root', '', 'registration');
+    foreach($array2 as $a)
+    {
+        $fields2.=$a.",";
+    }
+    $fields2 = rtrim($fields2,",");
 
-        //test if connection failed
-        if(mysqli_connect_errno()){
-        die("connection failed: "
-            . mysqli_connect_error()
-            . " (" . mysqli_connect_errno()
-            . ")");
-        }
-        //get results from database
-        $result = mysqli_query($db,"SELECT * FROM clothes");
-        $all_property = array();  //declare an array for saving property
+    foreach($array3 as $a)
+    {
+        $fields3.=$a.",";
+    }
+    $fields3 = rtrim($fields3,",");
 
-        //showing property
-        echo '<table class="data-table">
-            <tr class="data-heading">';  //initialize table tag
+    foreach($array4 as $a)
+    {
+        $fields4.=$a.",";
+    }
+    $fields4 = rtrim($fields4,",");
+    print_r($fields1);
+    print_r($fields2);
+    print_r($fields3);
+    print_r($fields4);
+
+	$q3 = 'Select SUM(Quantity) FROM clothes';
+	$db->query('$q3');
+	echo "dafsgfdff";
+	print_r($db);
+	
+	$array3 = Array();
+	while($result = $q3->fetch_assoc()){
+	$array3[] = $result['Quantity'];
+	}
+	print_r($array3);
+
+    $cars = array('9999-12-31 23:59:59','9998-12-31 23:59:59');
+    $cs = array(7,6);
+    $bs = array(7,6);
+    $ts = array(7,6);
+    $c = 8;
+    $t = 8;
+    $book = 2;
+    $clength = count($cars);
+    #FCFS
+
+    echo "initial supply  ";
+    print($c);
+    echo "initial demand :";
+    print(min($cs));
+    #logic for updating
+    $index = 0;
+    #clothes
+    for($x = 0; $x < $clength; $x++) {
+    if($c>=$cs[$x])
+    {
+        #update supply and demand
+        $c = $c - $cs[$x];
+        $cs[$x] = 0;
+        $index = $x; 
         
-        while ($property = mysqli_fetch_field($result)) {
-        echo '<td>' . $property->name . '</td>';  //get field name for header
-        array_push($all_property, $property->name);  //save those to array
+    }
+    }
+    #toys
+    for($x = 0; $x < $clength; $x++) {
+        if($t>=$ts[$x])
+        {
+            #update supply and demand
         }
-        
-        echo '</tr>'; //end tr tag
-
-        //showing all data
-        while ($row = mysqli_fetch_array($result)) {
-        echo "<tr>";
-        foreach ($all_property as $item) {
-            echo '<td>' . $row[$item] . '</td>'; //get items using property value
+    }
+    #books
+    for($x = 0; $x < $clength; $x++) {
+        if($t>=$ts[$x])
+        {
+            #update supply and demand
         }
-        echo '</tr>';
-        }
-        echo "</table>";
-    ?>
-    <button name="Need" onclick="document.location.href= 'admin.php'">Supply</button>
-    <?php
-        $result = mysqli_query($db,"SELECT * FROM clothes");
-        $all_property = array();  //declare an array for saving property
-
-        //showing property
-        echo '<table class="data-table">
-            <tr class="data-heading">';  //initialize table tag
-        
-        while ($property = mysqli_fetch_field($result)) {
-        echo '<td>' . $property->name . '</td>';  //get field name for header
-        array_push($all_property, $property->name);  //save those to array
-        }
-        
-        echo '</tr>'; //end tr tag
-    ?>
-    <button name="button2" onclick="document.location.href= 'admin.php'">Need of ngo</button>
-    <?php
-        $result = mysqli_query($db,"SELECT * FROM clothes");
-        $all_property = array();  //declare an array for saving property
-
-        //showing property
-        echo '<table class="data-table">
-            <tr class="data-heading">';  //initialize table tag
-        
-        while ($property = mysqli_fetch_field($result)) {
-        echo '<td>' . $property->name . '</td>';  //get field name for header
-        array_push($all_property, $property->name);  //save those to array
-        }
-        echo '</tr>'; //end tr tag
-    ?>
-</body>
-</html>
+    }
+    echo "final values supply ";
+    print($c);
+    print("need ".$cs[$index]);
+    #header("Location: final.php");
+?>
