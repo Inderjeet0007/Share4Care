@@ -1,3 +1,30 @@
+<style>
+body{
+ margin-top: -200px;
+}
+.data-table{
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+   
+	
+}
+
+.data-table td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+
+.data-table th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+</style>
+
 <?php
 
     // initializing variables
@@ -31,17 +58,16 @@
         $array4[] = $result['Timestamp'];
     }
     
-    print_r($array1);
-    print_r($array2);
-    print_r($array3);
-    print_r($array4);
+    ##print_r($array1);
+    ##print_r($array2);
+    ##print_r($array3);
+    ##print_r($array4);
     $fields1 = "";
     $fields2 = "";
     $fields3 = "";
     $fields4 = "";
 	
-	
-	
+
     foreach($array1 as $a)
     {
         $fields1.=$a.",";
@@ -65,22 +91,40 @@
         $fields4.=$a.",";
     }
     $fields4 = rtrim($fields4,",");
-    print_r($fields1);
-    print_r($fields2);
-    print_r($fields3);
-    print_r($fields4);
-
-	$q3 = 'Select SUM(Quantity) FROM clothes';
-	$db->query('$q3');
-	echo "dafsgfdff";
-	print_r($db);
+    ##print_r($fields1);
+    ##print_r($fields2);
+    ##print_r($fields3);
+    #echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+	#print_r($fields4);
 	
-	$array3 = Array();
+	#clothes
+	$q2 = $db->query("SELECT `Quantity` FROM `clothes`;");
+        $array5 = Array();
+        while($result = $q2->fetch_assoc()){
+        $array5[] = $result['Quantity'];
+        }
+	$clothes=array_sum($array5);
+	#echo array_sum($array5);
+	
+	#toys
+	$q3 = $db->query("SELECT `Quantity` FROM `toys`;");
+	$array6 = Array();
 	while($result = $q3->fetch_assoc()){
-	$array3[] = $result['Quantity'];
+	$array6[] = $result['Quantity'];
 	}
-	print_r($array3);
-
+	$toys=array_sum($array6);
+	#echo array_sum($array6);
+	
+	#stationary
+	$q4 = $db->query("SELECT `Quantity` FROM `stationary`;");
+	$array7 = Array();
+	while($result = $q4->fetch_assoc()){
+	$array7[] = $result['Quantity'];
+	}
+	$stationary=array_sum($array2);
+	#echo array_sum($array2);
+	
+	
     $cars = array('9999-12-31 23:59:59','9998-12-31 23:59:59');
     $cs = array(7,6);
     $bs = array(7,6);
@@ -88,42 +132,121 @@
     $c = 8;
     $t = 8;
     $book = 2;
-    $clength = count($cars);
-    #FCFS
-
-    echo "initial supply  ";
-    print($c);
-    echo "initial demand :";
-    print(min($cs));
+	
+    $clength = count($fields2);
+    #print_r($clength);
+	#FCFS
+	
+	
+	
+    #echo "initial supply  ";
+    #print($c);
+    #echo "initial demand :";
+    #print(min($cs));
     #logic for updating
     $index = 0;
     #clothes
+	
+	$clength = count($array2);
+    #print_r($clength);
+	
+	#echo "<br><br><br>here it comes";
     for($x = 0; $x < $clength; $x++) {
-    if($c>=$cs[$x])
-    {
-        #update supply and demand
-        $c = $c - $cs[$x];
-        $cs[$x] = 0;
-        $index = $x; 
-        
-    }
+    if($clothes>=$array2[$x])
+		{
+			#update supply and demand
+			$clothes = $clothes - $array2[$x];
+			$array2[$x] = 0;
+			$index2 = $x;    
+		}
     }
     #toys
     for($x = 0; $x < $clength; $x++) {
-        if($t>=$ts[$x])
+        if($toys>=$array3[$x])
         {
-            #update supply and demand
+            $toys = $toys - $array3[$x];
+			$array3[$x] = 0;
+			$index3 = $x; 
         }
     }
     #books
     for($x = 0; $x < $clength; $x++) {
-        if($t>=$ts[$x])
+        if($stationary>=$array4[$x])
         {
             #update supply and demand
+			$stationary = $stationary - $array4[$x];
+			$array4[$x] = 0;
+			$index4 = $x; 
         }
     }
-    echo "final values supply ";
-    print($c);
-    print("need ".$cs[$index]);
+    #echo "final values supply ";
+    #print($c);
+    #print("need ".$cs[$index]);
     #header("Location: final.php");
+	$clength = count($array2);
+    #print_r($clength);
+	#print_r($array2[1]);
+	
+	#Display table part
+	
+	
+//get results from database
+$result = mysqli_query($db,"SELECT * FROM need");
+$all_property = array();  //declare an array for saving property
+	
+//showing property
+echo '<table class="data-table" align="center" style="margin-top:20%;">'; //initialize table tag
+while ($property = mysqli_fetch_field($result)) {
+   echo '<td>' . $property->name . '</td>';  //get field name for header
+   array_push($all_property, $property->name);  //save those to array
+}
+echo '</tr>'; //end tr tag
+
+//showing all data
+while ($row = mysqli_fetch_array($result)) {
+   echo "<tr>";
+   foreach ($all_property as $item) {
+       echo '<td>' . $row[$item] . '</td>'; //get items using property value
+   }
+   echo '</tr>';
+}
+echo "</table>";
+
+echo "Total Donation<br>";
+
+echo '<table class="data-table" align="center" >'; //initialize table tag
+	echo "<tr>";
+		echo '<td>' .'clothes'. '</td>';
+		echo '<td>' .$clothes. '</td>';
+	echo "</tr>";
+	
+	
+	
+	echo "<tr>";
+		echo '<td>' .'Toys'. '</td>';
+		echo '<td>' .$toys. '</td>';
+	echo "</tr>";
+	echo "<tr>";
+		echo '<td>' .'Stationary'. '</td>';
+		echo '<td>' .$stationary. '</td>';
+	echo "</tr>";
+echo "</table>";
+	
 ?>
+<style>
+
+button {
+    background-color: #008CBA; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+</style>
+<br>
+<button onclick="document.location.href='index1.php'">
+BACK
+</button>
