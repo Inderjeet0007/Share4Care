@@ -13,18 +13,30 @@ header("location: login.php");
 }
 
 $book = $_POST['book'];
+
+$fields = "";
+$values = "";
+
+foreach($book as $a)
+{
+	$fields.=$a.",";
+	$values.="1,";
+}
+
+$fields = rtrim($fields,",");
+$values = rtrim($values,",");
+
 $quantity= $_POST['quantity'];
 if (isset($_SESSION['username']))
 {
 $name=$_SESSION['username'];
 }
-$query = "INSERT INTO stationary (username, Type, Quantity) VALUES('$name', '$book', '$quantity')";
+$query = "INSERT INTO stationary (username, Quantity, ".$fields.") VALUES('$name','$quantity', ".$values.")";
 
 $result= mysqli_query($db, $query);
 if($result)
 {
-echo "Success";
-
+echo "Thank you for donating!!";
 }
 else
 {
@@ -32,3 +44,8 @@ echo "Error";
 
 }
 ?>
+<br>
+<button onclick="document.location.href='homepage.php'">
+BACK
+</button>
+

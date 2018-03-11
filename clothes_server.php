@@ -16,8 +16,6 @@ $age=$_POST['age'];
 
 $quantity= $_POST['quantity'];
 
-
-print_r($age);
 $fields = "";
 $values = "";
 
@@ -29,20 +27,18 @@ foreach($age as $a)
 $fields = rtrim($fields,",");
 
 $values = rtrim($values,",");
-echo "$fields";
-echo "$values";
 
 if (isset($_SESSION['username']))
 {
 $name=$_SESSION['username'];
 }
 $query = "INSERT INTO clothes (Quantity, Gender, username,".$fields.") VALUES('$quantity', '$gender','$name', ".$values.")";
-echo $query;
+
 
 $result= mysqli_query($db, $query);
 if($result)
 {
-echo "Success";
+echo "Thank You for donating !!";
 
 }
 else
@@ -51,3 +47,7 @@ echo "Error";
 
 }
 ?>
+<br>
+<button onclick="document.location.href='homepage.php'">
+BACK
+</button>
