@@ -6,16 +6,12 @@ body{
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 100%;
-   
-	
 }
 
 .data-table td, th {
     border: 1px solid #ddd;
     padding: 8px;
 }
-
-
 .data-table th {
     padding-top: 12px;
     padding-bottom: 12px;
@@ -23,6 +19,16 @@ body{
     background-color: #4CAF50;
     color: white;
 }
+button {
+    background-color: #008CBA; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}	
 </style>
 
 <?php
@@ -58,10 +64,7 @@ body{
         $array4[] = $result['Timestamp'];
     }
     
-    ##print_r($array1);
-    ##print_r($array2);
-    ##print_r($array3);
-    ##print_r($array4);
+
     $fields1 = "";
     $fields2 = "";
     $fields3 = "";
@@ -91,21 +94,16 @@ body{
         $fields4.=$a.",";
     }
     $fields4 = rtrim($fields4,",");
-    ##print_r($fields1);
-    ##print_r($fields2);
-    ##print_r($fields3);
-    #echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
-	#print_r($fields4);
 	
 	#clothes
 	$q2 = $db->query("SELECT `Quantity` FROM `clothes`;");
-        $array5 = Array();
-        while($result = $q2->fetch_assoc()){
-        $array5[] = $result['Quantity'];
-        }
+	$array5 = Array();
+	while($result = $q2->fetch_assoc()){
+	$array5[] = $result['Quantity'];
+	}
 	$clothes=array_sum($array5);
 	#echo array_sum($array5);
-	
+
 	#toys
 	$q3 = $db->query("SELECT `Quantity` FROM `toys`;");
 	$array6 = Array();
@@ -114,43 +112,25 @@ body{
 	}
 	$toys=array_sum($array6);
 	#echo array_sum($array6);
-	
+
 	#stationary
 	$q4 = $db->query("SELECT `Quantity` FROM `stationary`;");
 	$array7 = Array();
 	while($result = $q4->fetch_assoc()){
 	$array7[] = $result['Quantity'];
-	}
+	}	
 	$stationary=array_sum($array2);
 	#echo array_sum($array2);
 	
-	
-    $cars = array('9999-12-31 23:59:59','9998-12-31 23:59:59');
-    $cs = array(7,6);
-    $bs = array(7,6);
-    $ts = array(7,6);
-    $c = 8;
-    $t = 8;
-    $book = 2;
-	
     $clength = count($fields2);
     #print_r($clength);
-	#FCFS
+    #FCFS
 	
-	
-	
-    #echo "initial supply  ";
-    #print($c);
-    #echo "initial demand :";
-    #print(min($cs));
-    #logic for updating
     $index = 0;
     #clothes
 	
 	$clength = count($array2);
     #print_r($clength);
-	
-	#echo "<br><br><br>here it comes";
     for($x = 0; $x < $clength; $x++) {
     if($clothes>=$array2[$x])
 		{
@@ -179,17 +159,9 @@ body{
 			$index4 = $x; 
         }
     }
-    #echo "final values supply ";
-    #print($c);
-    #print("need ".$cs[$index]);
-    #header("Location: final.php");
+   
 	$clength = count($array2);
-    #print_r($clength);
-	#print_r($array2[1]);
-	
-	#Display table part
-	
-	
+ 
 //get results from database
 $result = mysqli_query($db,"SELECT * FROM need");
 $all_property = array();  //declare an array for saving property
@@ -218,9 +190,7 @@ echo '<table class="data-table" align="center" >'; //initialize table tag
 	echo "<tr>";
 		echo '<td>' .'clothes'. '</td>';
 		echo '<td>' .$clothes. '</td>';
-	echo "</tr>";
-	
-	
+	echo "</tr>";	
 	
 	echo "<tr>";
 		echo '<td>' .'Toys'. '</td>';
@@ -233,19 +203,6 @@ echo '<table class="data-table" align="center" >'; //initialize table tag
 echo "</table>";
 	
 ?>
-<style>
-
-button {
-    background-color: #008CBA; /* Green */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-}
-</style>
 <br>
 <button onclick="document.location.href='index1.php'">
 BACK
